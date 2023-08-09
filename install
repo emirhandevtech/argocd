@@ -1,4 +1,4 @@
-install ve uygulamaya girmek için gerekli crd leri içeren manifest
+install ve uygulamaya erişmek için gerekli crd leri içeren manifest
 
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
@@ -10,11 +10,15 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
 Ya da aşağıdaki komut ile açılan dosyada "Type" Değerini "NodePort" yapmanız yeterli olacaktır.
 kubectl edit service/argocd-server -n argocd 
 
-
+Eğer   cloud servis sağlayıcı kullanıyorsanız, 
+service/argocd-server için kullanılacak portu cloud ortamınızda dış dünyaya açmanız gerekir.
+Eğer minikube üzerinde bir kurulum yapıyorsanız, 
+"minikube service --url argocd-server" komutu ile minikube üzerinde bu servis için bir geçici bir tünel açıp çıkan ip'ler üzerinden erişim sağlayabilirsiniz.
 
 UI passwordu için secret e bakacağız.
 linux için >> kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo 
 
 windows için >> kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"
-çıtıyı "==" olmadan kopyalayıp internet üzerinden base64 decode edip şifrenizi öğrnebilirsiniz.
+çıktıyı "==" olmadan kopyalayıp internet üzerinden base64 decode edip şifrenizi öğrnebilirsiniz.
 user = admin
+
